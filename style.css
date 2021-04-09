@@ -9,6 +9,14 @@
   text-decoration: none;
 }
 
+table,
+th,
+td {
+  text-align: center;
+  margin: auto;
+  border: 3px solid #311b92;
+}
+
 h2 {
   margin: 30px;
 }
