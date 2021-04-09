@@ -5,7 +5,21 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-align: center;
   text-decoration: none;
+}
+
+h2 {
+  margin: 30px;
+}
+
+form {
+  display: inline-block;
+  margin: 20px;
+}
+
+input {
+  margin: 10px;
 }
 
 .spacer {
