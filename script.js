@@ -31,8 +31,19 @@ class Receipt {
   }
 }
 
-let p = new Product("bulka", 2, 10);
-let r = new Receipt();
-r.addProduct(p);
-console.log(p);
-console.log(r);
+function log() {
+  console.log("eee");
+}
+const myform = document.getElementById("myform");
+// myform.addEventListener("submit", log);
+let R = new Receipt();
+
+myform.onsubmit = () => {
+  let p = new Product(
+    myform.fname.value,
+    myform.fquantity.value,
+    myform.fprice.value
+  );
+  console.log(p);
+  R.addProduct(p);
+};
