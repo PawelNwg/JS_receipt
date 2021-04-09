@@ -5,7 +5,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-align: center;
   text-decoration: none;
+}
+
+table,
+th,
+td {
+  text-align: center;
+  margin: auto;
+  border: 3px solid #311b92;
+}
+
+h2 {
+  margin: 30px;
+}
+
+form {
+  display: inline-block;
+  margin: 20px;
+}
+
+input {
+  margin: 10px;
 }
 
 .spacer {
