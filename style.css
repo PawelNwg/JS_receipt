@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap");
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.spacer {
+  min-height: 590px;
+}
+
+.header {
+  font-family: "Ubuntu", sans-serif;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  background: #000;
+  color: #fff;
+  border-bottom: 2px #311b92 solid;
+}
+
+/* navbar */
+
+.navbar {
+  width: 100%;
+  font-family: "Ubuntu", sans-serif;
+  padding: 30px 30px 30px 30px;
+  background: #000;
+  color: #fff;
+}
+
+.navbar .logo {
+  font-size: 35px;
+  font-weight: 600;
+  color: #ffffff;
+  display: inline-block;
+}
+
+.navbar .logo:hover {
+  color: #311b92;
+}
+
+.navbar .menu {
+  float: right;
+  display: inline-block;
+}
+
+.navbar .menu li {
+  list-style: none;
+  display: inline-block;
+  padding-top: 10px;
+}
+
+.navbar .menu li a {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 25px;
+  transition: color 0.3s ease;
+}
+
+.navbar .menu li a:hover {
+  color: #311b92;
+}
+
+/* articles */
+
+.articles {
+  width: 100%;
+  min-height: 500px;
+}
+
+.articles p {
+  color: #000;
+  font-family: "Poppins";
+  font-size: 12px;
+}
+
+article {
+  margin: 20px;
+}
+
+article img {
+  width: 100px;
+  height: 100px;
+  float: left;
+  padding: 8px;
+}
+
+article .article-header {
+  font-size: 30px;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.article-body {
+  border: 3px solid #000;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 30px;
+}
+
+.article-body:hover {
+  background: rgb(49, 27, 130, 0.2);
+}
+
+.article-body .date {
+  font-family: "Ubuntu", sans-serif;
+  color: #311b92;
+  padding-left: 10px;
+}
+
+.left {
+  float: left;
+  width: 60%;
+  padding-left: 40px;
+  margin-top: 70px;
+}
+
+.right {
+  float: left;
+  width: 20%;
+  padding-left: 50px;
+}
+
+/* calendar */
+
+.calender {
+  align-items: center;
+  margin-left: 100px;
+}
+
+.calender ul {
+  list-style-type: none;
+}
+
+.calender .month {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  padding-top: 100px;
+  font-size: 70px;
+}
+
+.calender .week ul {
+  margin-top: 15px;
+  width: 300px;
+  background: #311b92;
+  font-family: "Poppins", sans-serif;
+}
+
+.calender .week li {
+  display: inline-block;
+  width: 35px;
+  color: #fff;
+  text-align: center;
+}
+
+.calender .month li {
+  background: #000;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.calender .day li .active {
+  background: #311b92;
+  color: white;
+  padding: 0px 7px 0px 7px;
+  border: 1px solid #fff;
+}
+
+.calender .day ul {
+  width: 300px;
+  font-family: "Poppins", sans-serif;
+}
+.calender .day li {
+  display: inline-block;
+  width: 35px;
+  color: #000;
+  text-align: center;
+}
+
+.clear-both {
+  clear: both;
+}
+
+/* footer */
+
+footer {
+  font-family: "Poppins", sans-serif;
+  padding: 20px 23px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: #000;
+}
