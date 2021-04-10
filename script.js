@@ -24,14 +24,10 @@ class Receipt {
     this.receiptList = [];
   }
 
-  // addProduct(product) {
-  //   if (this.receiptList.findIndex((x) => x.id == product.id)) {
-  //     this.receiptList.push(product);
-  //   } else throw "Produkt o takim ID już istnieje";
-  // }
   addProduct = (product) => {
     if (this.receiptList.findIndex((x) => x.id != product.id) < 0) {
-      this.receiptList.push(product);
+      //this.receiptList.push(product); // add to List, to remove
+      localStorage.setItem(product.name, JSON.stringify(product)); // Added to localStorage
     } else throw "Produkt o takim ID już istnieje";
   };
 }
@@ -41,7 +37,7 @@ const myform = document.getElementById("myform");
 let R = new Receipt();
 R.addProduct(new Product("Kebabik", 1, 14));
 
-myform.onsubmit = () => {
+myform.onsubmit = (event) => {
   let p = new Product(
     myform.fname.value,
     myform.fquantity.value,
@@ -49,19 +45,23 @@ myform.onsubmit = () => {
   );
   console.log(p);
   R.addProduct(p);
+  printTable(p);
+  event.preventDefault();
 };
 
 printTable = () => {
+  // PRZEROBIC NA OTRZYMYWANIE JSONA
   var tableHeaders = ["LP", "NAZWA", "ILOŚĆ", "CENA", "SUMA"];
 
+  var oldTable = document.getElementById("table");
+  oldTable.innerHTML = ""; // kasowanie poprzedniej tabeli
+
   var myTableDiv = document.getElementById("table");
-
   var table = document.createElement("TABLE");
-
   var tableBody = document.createElement("TBODY");
   table.appendChild(tableBody);
 
-  for (var i = 0; i < R.receiptList.length + 1; i++) {
+  for (var i = 0; i < localStorage.length + 1; i++) {
     var tr = document.createElement("TR");
     tableBody.appendChild(tr);
 
@@ -70,7 +70,7 @@ printTable = () => {
       td.width = "120";
 
       if (i == 0) {
-        td.appendChild(document.createTextNode(tableHeaders[j]));
+        td.appendChild(document.createTextNode(tableHeaders[j])); // dodanie naglowkow
       } else if (j == 0)
         td.appendChild(document.createTextNode(R.receiptList[i - 1].id));
       else if (j == 1)
@@ -88,4 +88,19 @@ printTable = () => {
   myTableDiv.appendChild(table);
 };
 
-printTable();
+window.onload = (event) => {
+  printTable();
+};
+
+function allStorage() {
+  var values = [],
+    keys = Object.keys(localStorage),
+    i = keys.length;
+
+  while (i--) {
+    values.push(localStorage.getItem(keys[i]));
+  }
+
+  return values;
+}
+allStorage();
