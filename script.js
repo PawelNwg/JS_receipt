@@ -1,22 +1,20 @@
 class Product {
-  id;
   sum;
   constructor(name, quantity, price) {
-    (this.id = this.getId()),
-      (this.name = name),
+    (this.name = name),
       (this.quantity = quantity),
       (this.price = price),
       (this.sum = this.getSum());
   }
 
-  getSum() {
+  getSum = () => {
     // check q & p != 0
     return this.quantity * this.price;
-  }
+  };
 
-  getId() {
-    return Math.floor(Math.random() * 100);
-  }
+  // getId() {
+  //   return Math.floor(Math.random() * 100);
+  // }
 }
 
 class Receipt {
@@ -25,18 +23,43 @@ class Receipt {
   }
 
   addProduct = (product) => {
-    if (this.receiptList.findIndex((x) => x.id != product.id) < 0) {
-      //this.receiptList.push(product); // add to List, to remove
-      localStorage.setItem(product.name, JSON.stringify(product)); // Added to localStorage
-    } else throw "Produkt o takim ID już istnieje";
+    if (this.receiptList.findIndex((x) => x.name == product.name) < 0) {
+      this.receiptList.push(product); // add to List, to remove
+      localStorage.setItem("list", JSON.stringify(this.receiptList)); // Added to localStorage
+      console.log(localStorage.getItem("list"));
+    } else alert(`Produkt o nazwie ${product.name} już istnieje`);
+  };
+
+  deleteProduct = (product) => {
+    const index = this.receiptList.indexOf(product);
+    if (index > -1) {
+      this.receiptList.splice(index, 1);
+      localStorage.setItem("list", JSON.stringify(this.receiptList));
+      printTable();
+    }
+  };
+
+  containsProduct = (name) => {
+    if (this.receiptList.findIndex((x) => x.name == name) < 0) return false;
+    else return true;
+  };
+
+  swap = (index_1, index_2) => {
+    const elementTemp = this.receiptList[index_1];
+    this.receiptList[index_1] = this.receiptList[index_2];
+    this.receiptList[index_2] = elementTemp;
+    localStorage.setItem("list", JSON.stringify(this.receiptList));
+    printTable();
   };
 }
 
-const myform = document.getElementById("myform");
 // myform.addEventListener("submit", log);
-let R = new Receipt();
-R.addProduct(new Product("Kebabik", 1, 14));
 
+// Zmienne Globalne
+let R = new Receipt();
+let editedProduct = null;
+
+const myform = document.getElementById("myform");
 myform.onsubmit = (event) => {
   let p = new Product(
     myform.fname.value,
@@ -50,57 +73,156 @@ myform.onsubmit = (event) => {
 };
 
 printTable = () => {
-  // PRZEROBIC NA OTRZYMYWANIE JSONA
-  var tableHeaders = ["LP", "NAZWA", "ILOŚĆ", "CENA", "SUMA"];
+  //PRZEROBIC NA OTRZYMYWANIE JSONA
+  const tableHeaders = ["LP", "NAZWA", "ILOŚĆ", "CENA", "SUMA", "AKCJE"];
 
-  var oldTable = document.getElementById("table");
+  const oldTable = document.getElementById("table");
   oldTable.innerHTML = ""; // kasowanie poprzedniej tabeli
 
-  var myTableDiv = document.getElementById("table");
-  var table = document.createElement("TABLE");
-  var tableBody = document.createElement("TBODY");
+  const myTableDiv = document.getElementById("table");
+  const table = document.createElement("TABLE");
+  const tableBody = document.createElement("TBODY");
   table.appendChild(tableBody);
+  const tr = document.createElement("TR");
+  tableBody.appendChild(tr);
+  tableHeaders.forEach((element) => {
+    const header = document.createElement("TH");
+    header.width = "150";
+    header.innerHTML = element;
+    tr.appendChild(header);
+  });
 
-  for (var i = 0; i < localStorage.length + 1; i++) {
-    var tr = document.createElement("TR");
-    tableBody.appendChild(tr);
+  if (R.receiptList !== null) {
+    R.receiptList.forEach((element, index, array) => {
+      const row = document.createElement("TR");
+      tableBody.appendChild(row);
 
-    for (var j = 0; j < 5; j++) {
-      var td = document.createElement("TD");
-      td.width = "120";
+      const lp = document.createElement("TD");
+      lp.innerHTML = index + 1;
+      row.appendChild(lp);
 
-      if (i == 0) {
-        td.appendChild(document.createTextNode(tableHeaders[j])); // dodanie naglowkow
-      } else if (j == 0)
-        td.appendChild(document.createTextNode(R.receiptList[i - 1].id));
-      else if (j == 1)
-        td.appendChild(document.createTextNode(R.receiptList[i - 1].name));
-      else if (j == 2)
-        td.appendChild(document.createTextNode(R.receiptList[i - 1].quantity));
-      else if (j == 3)
-        td.appendChild(document.createTextNode(R.receiptList[i - 1].price));
-      else if (j == 4)
-        td.appendChild(document.createTextNode(R.receiptList[i - 1].sum));
+      const name = document.createElement("TD");
+      name.innerHTML = element.name;
+      row.appendChild(name);
 
-      tr.appendChild(td);
-    }
+      const quantity = document.createElement("TD");
+      quantity.innerHTML = element.quantity;
+      row.appendChild(quantity);
+
+      const price = document.createElement("TD");
+      price.innerHTML = element.price;
+      row.appendChild(price);
+
+      const sum = document.createElement("TD");
+      sum.innerHTML = element.sum;
+      row.appendChild(sum);
+
+      const buttons = document.createElement("TD");
+      const editButton = document.createElement("button");
+
+      editButton.innerText = "edytuj";
+      editButton.style.width = "50px";
+      editButton.style.height = "20px";
+      editButton.style.borderColor = "green";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.innerText = "usuń";
+      deleteButton.style.width = "50px";
+      deleteButton.style.height = "20px";
+      deleteButton.style.borderColor = "red";
+
+      if (index > 0) {
+        const upButton = document.createElement("button");
+        upButton.innerText = "↑";
+        upButton.style.width = "20px";
+        upButton.style.height = "20px";
+        upButton.onclick = () => HandelUpProductClick(index);
+        buttons.appendChild(upButton);
+      }
+
+      if (index != array.length - 1) {
+        const downButton = document.createElement("button");
+        downButton.innerText = "↓";
+        downButton.style.width = "20px";
+        downButton.style.height = "20px";
+        downButton.onclick = () => HandelDownProductClick(index);
+        buttons.appendChild(downButton);
+      }
+
+      editButton.onclick = () => HandelEditProductClick(element);
+      deleteButton.onclick = () => HandelDeleteProductClick(element);
+
+      buttons.appendChild(editButton);
+      buttons.appendChild(deleteButton);
+      row.appendChild(buttons);
+    });
   }
+
   myTableDiv.appendChild(table);
 };
 
 window.onload = (event) => {
+  R.receiptList = loadLocalStorage();
+  console.log(R.receiptList);
   printTable();
 };
 
-function allStorage() {
-  var values = [],
-    keys = Object.keys(localStorage),
-    i = keys.length;
+editform.onsubmit = (event) => {
+  event.preventDefault();
+  const editform = document.getElementById("editform");
+  const name = editform.ename.value;
+  const quantity = editform.equantity.value;
+  const price = editform.eprice.value;
+  if (!R.containsProduct(name) || editedProduct.name == name) {
+    editedProduct.name = name;
+    editedProduct.quantity = quantity;
+    editedProduct.price = price;
+    editedProduct.sum = editedProduct.price * editedProduct.quantity;
+    editform.style.visibility = "hidden";
+    localStorage.setItem("list", JSON.stringify(this.receiptList));
+    printTable();
+  } else alert(`Produkt o nazwie ${editedProduct.name} już istnieje`);
+  // TODO: DODAC WALIDACJE TUTAJ
+  // TODO: ROUND CENY
+};
 
-  while (i--) {
-    values.push(localStorage.getItem(keys[i]));
-  }
+loadLocalStorage = () => {
+  const data = localStorage.getItem("list");
+  if (data == null) return [];
+  else return JSON.parse(data);
+};
 
-  return values;
-}
-allStorage();
+const HandelEditProductClick = (product) => {
+  const editform = document.getElementById("editform");
+  editform.style.visibility = "visible";
+  (editform.ename.value = product.name),
+    (editform.equantity.value = product.quantity),
+    (editform.eprice.value = product.price);
+  editedProduct = product;
+};
+
+const HandelDeleteProductClick = (product) => {
+  R.deleteProduct(product);
+};
+
+const HandelUpProductClick = (index) => {
+  R.swap(index, index - 1);
+};
+
+const HandelDownProductClick = (index) => {
+  R.swap(index, index + 1);
+};
+// TODO: WALIDACJA
+// FIXME: XD
+// function allStorage() {
+//   var values = [],
+//     keys = Object.keys(localStorage),
+//     i = keys.length;
+
+//   while (i--) {
+//     values.push(localStorage.getItem(keys[i]));
+//   }
+
+//   return values;
+// }
+// allStorage();
