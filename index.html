@@ -15,9 +15,16 @@
             <h2>Nowa Pozycja</h2> 
             <form action="#" id="myform">
                 Nazwa: <input type="text" name="fname" required>               
-                Ilość: <input type="number" name="fquantity" required>                
-                Cena: <input type="number" name="fprice" required>
+                Ilość: <input type="text" name="fquantity" required>                
+                Cena: <input type="text" name="fprice" required>
                 <input type="submit" value="dodaj">
+            </form>
+            <form style="visibility: collapse;" action="#" id="editform">
+                <h3>Edytuj</h3> 
+                Nazwa: <input type="text" name="ename" required>               
+                Ilość: <input type="text" name="equantity" required>                
+                Cena: <input type="text" name="eprice" required>
+                <input type="submit" value="edytuj">
             </form>
             <div class="spacer">
             <div id="table"></div>
@@ -28,4 +35,5 @@
             <script src="script.js"></script>
     </body>   
 </html>
+
 
