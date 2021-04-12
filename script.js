@@ -60,6 +60,7 @@ let editedProduct = null;
 
 const myform = document.getElementById("myform");
 myform.onsubmit = (event) => {
+   event.preventDefault();
    if (isNaN(myform.fquantity.value) || isNaN(myform.fprice.value)) {
       alert("Podano złe wartości. Jako separatora użyj '.'");
       return;
@@ -73,7 +74,6 @@ myform.onsubmit = (event) => {
 
    R.addProduct(p);
    printTable(p);
-   event.preventDefault();
 };
 
 printTable = () => {
