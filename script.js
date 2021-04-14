@@ -8,19 +8,22 @@ class Product {
    }
 
    getSum = () => {
-      // check q & p != 0
       return this.quantity * this.price;
    };
-
-   // getId() {
-   //   return Math.floor(Math.random() * 100);
-   // }
 }
 
 class Receipt {
    constructor() {
       this.receiptList = [];
    }
+
+   getReceiptValue = () => {
+      let value = 0;
+      this.receiptList.forEach((element) => {
+         value += element.sum;
+      });
+      return roundNumber(value);
+   };
 
    addProduct = (product) => {
       if (this.receiptList.findIndex((x) => x.name == product.name) < 0) {
@@ -52,9 +55,6 @@ class Receipt {
    };
 }
 
-// myform.addEventListener("submit", log);
-
-// Zmienne Globalne
 let R = new Receipt();
 let editedProduct = null;
 
@@ -162,6 +162,22 @@ printTable = () => {
       });
    }
 
+   const row = document.createElement("TR");
+   tableBody.appendChild(row);
+
+   row.appendChild(document.createElement("TD"));
+   row.appendChild(document.createElement("TD"));
+   row.appendChild(document.createElement("TD"));
+   row.appendChild(document.createElement("TD"));
+
+   const sumCell = document.createElement("TH");
+   sumCell.innerHTML = "SUMA";
+   row.appendChild(sumCell);
+
+   const sumValueCell = document.createElement("TD");
+   sumValueCell.innerHTML = `${R.getReceiptValue()} zł`;
+   row.appendChild(sumValueCell);
+
    myTableDiv.appendChild(table);
 };
 
@@ -192,8 +208,6 @@ editform.onsubmit = (event) => {
       localStorage.setItem("list", JSON.stringify(this.receiptList));
       printTable();
    } else alert(`Produkt o nazwie ${editedProduct.name} już istnieje`);
-
-   // TODO: ROUND CENY
 };
 
 const roundNumber = (number) => {
